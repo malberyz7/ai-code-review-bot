@@ -1,0 +1,450 @@
+/**
+ * AI Code Review Bot - Stylesheet
+ * Modern, clean, and responsive design
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary-color: #8b5cf6;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    --bg-color: #f9fafb;
+    --card-bg: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--bg-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+main {
+    padding: 40px;
+}
+
+/* Input Section */
+.input-section {
+    margin-bottom: 30px;
+}
+
+.input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.input-header label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.input-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.language-input {
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 180px;
+    transition: border-color 0.3s;
+}
+
+.language-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.review-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-btn:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.review-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#code-input {
+    width: 100%;
+    min-height: 300px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    resize: vertical;
+    transition: border-color 0.3s;
+    background: var(--card-bg);
+}
+
+#code-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Results Section */
+.results-section {
+    margin-top: 40px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.result-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-content {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* Issues */
+.issues-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.issue-item {
+    padding: 15px;
+    background: #fef2f2;
+    border-left: 4px solid var(--error-color);
+    border-radius: 6px;
+}
+
+.issue-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.issue-header strong {
+    text-transform: capitalize;
+    color: var(--text-primary);
+}
+
+.issue-description {
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-high {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-medium {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-low {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.line-number {
+    background: var(--bg-color);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-family: monospace;
+}
+
+.no-issues {
+    color: var(--success-color);
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Suggestions */
+.suggestions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.suggestions-list li {
+    padding: 12px 0;
+    padding-left: 30px;
+    position: relative;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestions-list li:last-child {
+    border-bottom: none;
+}
+
+.suggestions-list li::before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+}
+
+.no-suggestions {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Improved Code */
+.code-container {
+    position: relative;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.copy-btn:hover {
+    background: var(--primary-dark);
+}
+
+.copy-btn.copied {
+    background: var(--success-color);
+}
+
+#improved-code {
+    display: block;
+    padding: 20px;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre;
+    margin-top: 40px;
+}
+
+/* Error Message */
+.error-message {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--error-color);
+    font-weight: 500;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Footer */
+footer {
+    background: var(--bg-color);
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 30px 20px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .input-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .language-input {
+        width: 100%;
+    }
+
+    .review-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #code-input {
+        min-height: 250px;
+        font-size: 0.9rem;
+    }
+
+    .result-card {
+        padding: 20px;
+    }
+
+    .result-card h2 {
+        font-size: 1.3rem;
+    }
+
+    .issue-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    .result-card {
+        padding: 15px;
+    }
+}
+

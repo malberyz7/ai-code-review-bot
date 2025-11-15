@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Review Bot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Code Review Bot</h1>
+            <p class="subtitle">Get instant AI-powered code reviews for quality, bugs, security, and performance</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="input-header">
+                    <label for="code-input">Paste your code here:</label>
+                    <div class="input-controls">
+                        <input type="text" id="language-input" placeholder="Language (optional)" class="language-input">
+                        <button id="review-btn" class="review-btn">
+                            <span class="btn-text">Review Code</span>
+                            <span class="btn-loader" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                </div>
+                <textarea 
+                    id="code-input" 
+                    placeholder="// Paste your code here...&#10;// Supports any programming language&#10;&#10;function example() {&#10;    console.log('Hello, World!');&#10;}"
+                    spellcheck="false"
+                ></textarea>
+            </div>
+
+            <div id="results-section" class="results-section" style="display: none;">
+                <div class="result-card">
+                    <h2>📋 Summary</h2>
+                    <div id="summary" class="summary-content"></div>
+                </div>
+
+                <div class="result-card">
+                    <h2>⚠️ Issues Found</h2>
+                    <div id="issues" class="issues-content">
+                        <p class="no-issues">No issues found! 🎉</p>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h2>💡 Suggestions</h2>
+                    <div id="suggestions" class="suggestions-content">
+                        <p class="no-suggestions">No suggestions at this time.</p>
+                    </div>
+                </div>
+
+                <div id="improved-code-card" class="result-card" style="display: none;">
+                    <h2>✨ Improved Code</h2>
+                    <div class="code-container">
+                        <button id="copy-btn" class="copy-btn">Copy Code</button>
+                        <pre><code id="improved-code"></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-message" class="error-message" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>Powered by OpenAI GPT-4 | AI Code Review Bot v1.0</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
