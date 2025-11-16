@@ -3,8 +3,8 @@
  * Handles user interactions and API communication
  */
 
-// API endpoint configuration
-const API_BASE_URL = 'http://localhost:8000';
+// API endpoint configuration - use relative path since frontend is served from same origin
+const API_BASE_URL = '';  // Empty string means same origin as the HTML file
 const REVIEW_ENDPOINT = `${API_BASE_URL}/review_code`;
 
 // DOM elements
@@ -199,7 +199,9 @@ async function reviewCode() {
         // Check if request was successful
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ detail: 'Unknown error' }));
-            throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+            const error = new Error(errorData.detail?.message || errorData.detail || `HTTP error! status: ${response.status}`);
+            error.response = response; // Attach response for better error handling
+            throw error;
         }
         
         // Parse response
@@ -212,8 +214,26 @@ async function reviewCode() {
         // Provide helpful error messages
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
             showError('Cannot connect to the server. Make sure the backend is running on http://localhost:8000');
+        } else if (error.message.includes('quota') || error.message.includes('billing')) {
+            showError('❌ OpenAI API Quota Exceeded. Please check your billing at https://platform.openai.com/account/billing');
+        } else if (error.message.includes('401') || error.message.includes('Authentication')) {
+            showError('❌ Invalid API Key. Please check your OPENAI_API_KEY in the backend/.env file');
         } else {
-            showError(error.message || 'An unexpected error occurred. Please try again.');
+            // Try to extract error message from response
+            let errorMsg = error.message || 'An unexpected error occurred. Please try again.';
+            if (error.response) {
+                try {
+                    const errorData = await error.response.json();
+                    if (errorData.detail && typeof errorData.detail === 'object') {
+                        errorMsg = errorData.detail.message || errorData.detail.error || errorMsg;
+                    } else if (errorData.detail) {
+                        errorMsg = errorData.detail;
+                    }
+                } catch (e) {
+                    // If parsing fails, use the original message
+                }
+            }
+            showError(errorMsg);
         }
     } finally {
         setLoading(false);
