@@ -4,7 +4,7 @@ An AI-powered code review service that analyzes code snippets for quality issues
 
 ## 🎥 Project Video Tutorial
 
-**Watch the complete tutorial and demo:**
+**Watch the complete tutorial:**
 
 👉 **[https://www.youtube.com/watch?v=VL9WoG0X21o](https://www.youtube.com/watch?v=VL9WoG0X21o)**
 
