@@ -42,7 +42,7 @@ AI Code Review Bot/
 - Google Gemini API key (FREE) - [Get free API key](https://makersuite.google.com/app/apikey)
 - A modern web browser
 
-> 💡 **Note**: This project uses Google Gemini by default. The code infrastructure supports other providers (OpenAI, Hugging Face, Groq) but they are not configured. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
+> 💡 **Note**: This project uses Google Gemini by default. The code infrastructure supports other providers (OpenAI, Hugging Face, Groq). See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
 
 ## Setup Instructions
 
