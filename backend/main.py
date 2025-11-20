@@ -1,6 +1,6 @@
 """
 AI Code Review Bot - Backend API
-Uses FastAPI to provide code review functionality via OpenAI API
+Uses FastAPI to provide code review functionality via AI APIs (Google Gemini by default)
 """
 
 from fastapi import FastAPI, HTTPException

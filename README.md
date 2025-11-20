@@ -42,7 +42,7 @@ AI Code Review Bot/
 - Google Gemini API key (FREE) - [Get free API key](https://makersuite.google.com/app/apikey)
 - A modern web browser
 
-> 💡 **Note**: This project uses Google Gemini by default. The code infrastructure supports other providers (OpenAI, Hugging Face, Groq) but they are not configured. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
+> 💡 **Note**: This project uses Google Gemini by default. The code infrastructure supports other providers (OpenAI, Hugging Face) but they are not configured. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
 
 ## Setup Instructions
 
@@ -178,36 +178,53 @@ Review a code snippet.
 **Request Body:**
 ```json
 {
-  "code": "function example() { console.log('Hello'); }",
-  "language": "javascript"  // optional
+  "code": "def get_user_data(user_id):\n    query = \"SELECT * FROM users WHERE id = \" + user_id\n    result = db.execute(query)\n    return result.fetchall()",
+  "language": "python"
 }
 ```
 
 **Response:**
 ```json
 {
-  "summary": "Brief summary of the code...",
+  "summary": "This function retrieves user data from a database but contains a critical SQL injection vulnerability. The code directly concatenates user input into a SQL query without sanitization, which is a serious security risk.",
   "issues": [
     {
+      "type": "security",
+      "severity": "high",
+      "description": "SQL injection vulnerability: user input is directly concatenated into SQL query without parameterization",
+      "line": "2"
+    },
+    {
       "type": "quality",
+      "severity": "medium",
+      "description": "Missing error handling for database operations",
+      "line": "3"
+    },
+    {
+      "type": "performance",
       "severity": "low",
-      "description": "Issue description",
-      "line": "5"
+      "description": "Using SELECT * instead of specific columns can impact performance",
+      "line": "2"
     }
   ],
   "suggestions": [
-    "Suggestion 1",
-    "Suggestion 2"
+    "Use parameterized queries to prevent SQL injection attacks",
+    "Add try-except blocks to handle database errors gracefully",
+    "Specify only the columns you need instead of SELECT *",
+    "Consider adding input validation for user_id"
   ],
-  "improved_code": "// Improved version..."
+  "improved_code": "def get_user_data(user_id):\n    try:\n        # Use parameterized query to prevent SQL injection\n        query = \"SELECT id, name, email FROM users WHERE id = ?\"\n        result = db.execute(query, (user_id,))\n        return result.fetchall()\n    except Exception as e:\n        logger.error(f\"Error fetching user data: {e}\")\n        return None"
 }
 ```
 
 ### GET `/`
 
-Health check endpoint.
+Serves the frontend HTML interface. If the frontend files are not found, returns a JSON health check response.
 
-**Response:**
+**Response (if frontend exists):**
+- Returns `index.html` file
+
+**Response (fallback JSON):**
 ```json
 {
   "message": "AI Code Review Bot API",
@@ -249,9 +266,11 @@ Health check endpoint.
 - In production, restrict CORS origins to your frontend domain
 - Consider rate limiting for production deployments
 
-## Setup Guide
+## Setup Guides
 
-- **[GEMINI_SETUP.md](GEMINI_SETUP.md)**: Detailed setup guide for Google Gemini
+- **[QUICKSTART.md](QUICKSTART.md)**: Quick start guide - get running in minutes
+- **[GEMINI_SETUP.md](GEMINI_SETUP.md)**: Detailed setup guide for Google Gemini (current default)
+- **[FREE_SETUP.md](FREE_SETUP.md)**: Alternative free setup options (Hugging Face)
 
 ## Future Enhancements
 
