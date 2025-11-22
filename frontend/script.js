@@ -1,13 +1,6 @@
-/**
- * AI Code Review Bot - Frontend JavaScript
- * Handles user interactions and API communication
- */
-
-// API endpoint configuration - use relative path since frontend is served from same origin
-const API_BASE_URL = '';  // Empty string means same origin as the HTML file
+const API_BASE_URL = '';
 const REVIEW_ENDPOINT = `${API_BASE_URL}/review_code`;
 
-// DOM elements
 const codeInput = document.getElementById('code-input');
 const languageInput = document.getElementById('language-input');
 const reviewBtn = document.getElementById('review-btn');
@@ -20,9 +13,6 @@ const improvedCodeCard = document.getElementById('improved-code-card');
 const errorMessage = document.getElementById('error-message');
 const copyBtn = document.getElementById('copy-btn');
 
-/**
- * Show loading state on the review button
- */
 function setLoading(isLoading) {
     const btnText = reviewBtn.querySelector('.btn-text');
     const btnLoader = reviewBtn.querySelector('.btn-loader');
@@ -38,30 +28,20 @@ function setLoading(isLoading) {
     }
 }
 
-/**
- * Show error message to user
- */
 function showError(message) {
     errorMessage.textContent = `❌ Error: ${message}`;
     errorMessage.style.display = 'block';
     resultsSection.style.display = 'none';
     
-    // Hide error after 5 seconds
     setTimeout(() => {
         errorMessage.style.display = 'none';
     }, 5000);
 }
 
-/**
- * Hide error message
- */
 function hideError() {
     errorMessage.style.display = 'none';
 }
 
-/**
- * Format issue severity with appropriate styling
- */
 function getSeverityBadge(severity) {
     const badges = {
         'critical': '<span class="badge badge-critical">CRITICAL</span>',
@@ -72,9 +52,6 @@ function getSeverityBadge(severity) {
     return badges[severity?.toLowerCase()] || '<span class="badge">UNKNOWN</span>';
 }
 
-/**
- * Format issue type with icon
- */
 function getIssueTypeIcon(type) {
     const icons = {
         'bug': '🐛',
@@ -86,16 +63,11 @@ function getIssueTypeIcon(type) {
     return icons[type?.toLowerCase()] || '⚠️';
 }
 
-/**
- * Display the review results
- */
 function displayResults(data) {
     hideError();
     
-    // Display summary
     summaryDiv.textContent = data.summary || 'No summary available.';
     
-    // Display issues
     if (data.issues && data.issues.length > 0) {
         issuesDiv.innerHTML = data.issues.map(issue => `
             <div class="issue-item">
@@ -112,7 +84,6 @@ function displayResults(data) {
         issuesDiv.innerHTML = '<p class="no-issues">No issues found! 🎉</p>';
     }
     
-    // Display suggestions
     if (data.suggestions && data.suggestions.length > 0) {
         suggestionsDiv.innerHTML = `
             <ul class="suggestions-list">
@@ -123,28 +94,21 @@ function displayResults(data) {
         suggestionsDiv.innerHTML = '<p class="no-suggestions">No suggestions at this time.</p>';
     }
     
-    // Display improved code if available
     if (data.improved_code && data.improved_code.trim()) {
         improvedCodeDiv.textContent = data.improved_code;
         improvedCodeCard.style.display = 'block';
         
-        // Add syntax highlighting attempt (basic)
         const codeBlock = improvedCodeDiv.parentElement;
         codeBlock.className = 'code-block';
     } else {
         improvedCodeCard.style.display = 'none';
     }
     
-    // Show results section
     resultsSection.style.display = 'block';
     
-    // Scroll to results
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/**
- * Copy improved code to clipboard
- */
 copyBtn.addEventListener('click', async () => {
     const code = improvedCodeDiv.textContent;
     try {
@@ -161,20 +125,15 @@ copyBtn.addEventListener('click', async () => {
     }
 });
 
-/**
- * Send code review request to backend
- */
 async function reviewCode() {
     const code = codeInput.value.trim();
     const language = languageInput.value.trim() || null;
     
-    // Validate input
     if (!code) {
         showError('Please enter some code to review.');
         return;
     }
     
-    // Check code length
     if (code.length > 10000) {
         showError('Code is too long. Maximum length is 10,000 characters.');
         return;
@@ -184,7 +143,6 @@ async function reviewCode() {
     hideError();
     
     try {
-        // Make API request
         const response = await fetch(REVIEW_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -196,22 +154,19 @@ async function reviewCode() {
             })
         });
         
-        // Check if request was successful
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ detail: 'Unknown error' }));
             const error = new Error(errorData.detail?.message || errorData.detail || `HTTP error! status: ${response.status}`);
-            error.response = response; // Attach response for better error handling
+            error.response = response;
             throw error;
         }
         
-        // Parse response
         const data = await response.json();
         displayResults(data);
         
     } catch (error) {
         console.error('Error reviewing code:', error);
         
-        // Provide helpful error messages
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
             showError('Cannot connect to the server. Make sure the backend is running on http://localhost:8000');
         } else if (error.message.includes('quota') || error.message.includes('billing')) {
@@ -219,7 +174,6 @@ async function reviewCode() {
         } else if (error.message.includes('401') || error.message.includes('Authentication')) {
             showError('❌ Invalid API Key. Please check your OPENAI_API_KEY in the backend/.env file');
         } else {
-            // Try to extract error message from response
             let errorMsg = error.message || 'An unexpected error occurred. Please try again.';
             if (error.response) {
                 try {
@@ -230,7 +184,6 @@ async function reviewCode() {
                         errorMsg = errorData.detail;
                     }
                 } catch (e) {
-                    // If parsing fails, use the original message
                 }
             }
             showError(errorMsg);
@@ -240,21 +193,14 @@ async function reviewCode() {
     }
 }
 
-/**
- * Event listeners
- */
-
-// Review button click
 reviewBtn.addEventListener('click', reviewCode);
 
-// Enter key in language input
 languageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         reviewCode();
     }
 });
 
-// Allow Ctrl/Cmd + Enter to submit from textarea
 codeInput.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
@@ -262,7 +208,6 @@ codeInput.addEventListener('keydown', (e) => {
     }
 });
 
-// Auto-resize textarea
 codeInput.addEventListener('input', function() {
     this.style.height = 'auto';
     this.style.height = (this.scrollHeight) + 'px';
