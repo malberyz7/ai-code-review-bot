@@ -25,15 +25,15 @@ An AI-powered code review service that analyzes code snippets for quality issues
 ```
 AI Code Review Bot/
 ├── backend/
-│   ├── main.py              # FastAPI application (serves both API and frontend)
-│   ├── requirements.txt     # Python dependencies
-│   └── .env.example         # Environment variables template
+│   ├── main.py         
+│   ├── requirements.txt     
+│   └── .env.example         
 ├── frontend/
-│   ├── index.html           # Main HTML file
-│   ├── script.js            # Frontend JavaScript
-│   └── style.css            # Styling
-├── run.py                   # Unified launcher (run this to start everything)
-└── README.md                # This file
+│   ├── index.html       
+│   ├── script.js            
+│   └── style.css           
+├── run.py                  
+└── README.md                
 ```
 
 ## Prerequisites
