@@ -25,14 +25,14 @@ An AI-powered code review service that analyzes code snippets for quality issues
 ```
 AI Code Review Bot/
 ├── backend/
-│   ├── main.py              # FastAPI application
-│   ├── config.py            # Configuration management
-│   ├── models.py            # Pydantic models
-│   ├── exceptions.py        # Error handling
-│   ├── constants.py         # Application constants
-│   ├── gemini_service.py    # Gemini AI service
+│   ├── main.py           
+│   ├── config.py          
+│   ├── models.py          
+│   ├── exceptions.py        
+│   ├── constants.py         
+│   ├── gemini_service.py    
 │   ├── requirements.txt     
-│   ├── services/            # Business logic
+│   ├── services/            
 │   │   └── code_review_service.py
 │   └── .env.example         
 ├── frontend/
@@ -118,11 +118,6 @@ uvicorn main:app --reload
 
 The frontend will be automatically served at `http://localhost:8001` and the API will be available at the same address.
 
-#### Useful URLs
-
-- **Frontend UI**: http://localhost:8001
-- **API Documentation**: http://localhost:8001/docs
-- **ReDoc**: http://localhost:8001/redoc
 
 ## How It Works
 
@@ -284,14 +279,6 @@ Serves the frontend HTML interface. If the frontend files are not found, returns
 - **[GEMINI_SETUP.md](GEMINI_SETUP.md)**: Detailed setup guide for Google Gemini (current default)
 - **[FREE_SETUP.md](FREE_SETUP.md)**: Alternative free setup options (Hugging Face)
 
-## Future Enhancements
-
-Potential improvements:
-- Support for file uploads
-- History of reviews (with user authentication)
-- Export results as PDF
-- Integration with version control systems
-- Batch code review
 
 ## License
 
