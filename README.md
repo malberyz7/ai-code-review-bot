@@ -25,13 +25,26 @@ An AI-powered code review service that analyzes code snippets for quality issues
 ```
 AI Code Review Bot/
 ├── backend/
-│   ├── main.py         
+│   ├── main.py              # FastAPI application
+│   ├── config.py            # Configuration management
+│   ├── models.py            # Pydantic models
+│   ├── exceptions.py        # Error handling
+│   ├── constants.py         # Application constants
+│   ├── gemini_service.py    # Gemini AI service
 │   ├── requirements.txt     
+│   ├── services/            # Business logic
+│   │   └── code_review_service.py
 │   └── .env.example         
 ├── frontend/
 │   ├── index.html       
-│   ├── script.js            
-│   └── style.css           
+│   ├── style.css
+│   └── js/                  # Modular JavaScript files
+│       ├── config.js
+│       ├── dom.js
+│       ├── utils.js
+│       ├── ui.js
+│       ├── api.js
+│       └── main.js
 ├── run.py                  
 └── README.md                
 ```
@@ -42,7 +55,7 @@ AI Code Review Bot/
 - Google Gemini API key (FREE) - [Get free API key](https://makersuite.google.com/app/apikey)
 - A modern web browser
 
-> 💡 **Note**: This project uses Google Gemini by default. The code infrastructure supports other providers (OpenAI, Hugging Face) but they are not configured. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
+> 💡 **Note**: This project uses Google Gemini exclusively. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
 
 ## Setup Instructions
 
@@ -71,7 +84,6 @@ AI Code Review Bot/
    
    Then edit `.env` and add your Google Gemini API key:
    ```
-   AI_PROVIDER=gemini
    GEMINI_API_KEY=your_gemini_api_key_here
    GEMINI_MODEL=models/gemini-2.0-flash
    ```
@@ -90,9 +102,9 @@ python3 run.py
 
 **Note**: On macOS and some Linux systems, use `python3` instead of `python`.
 
-This will start both the backend API and serve the frontend together at `http://localhost:8000`
+This will start both the backend API and serve the frontend together at `http://localhost:8001`
 
-**That's it!** Open `http://localhost:8000` in your browser to use the application.
+**That's it!** Open `http://localhost:8001` in your browser to use the application.
 
 #### Alternative: Run Backend Separately
 
@@ -104,13 +116,13 @@ source venv/bin/activate  # Activate virtual environment
 uvicorn main:app --reload
 ```
 
-The frontend will be automatically served at `http://localhost:8000` and the API will be available at the same address.
+The frontend will be automatically served at `http://localhost:8001` and the API will be available at the same address.
 
 #### Useful URLs
 
-- **Frontend UI**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+- **Frontend UI**: http://localhost:8001
+- **API Documentation**: http://localhost:8001/docs
+- **ReDoc**: http://localhost:8001/redoc
 
 ## How It Works
 
@@ -167,7 +179,7 @@ Google Gemini analyzes code by:
 The analysis is returned in a structured JSON format for easy parsing and display.
 
 **AI Provider:**
-- **Google Gemini**: Free, fast, and reliable. Uses `models/gemini-2.0-flash` by default.
+- **Google Gemini**: Free, fast, and reliable. Uses `models/gemini-2.0-flash` by default with automatic fallback to other available models.
 
 ## API Endpoints
 
@@ -248,14 +260,14 @@ Serves the frontend HTML interface. If the frontend files are not found, returns
 ### Backend Issues
 
 - **"GEMINI_API_KEY environment variable is not set"**: Make sure you've created a `.env` file with your Gemini API key
-- **Connection errors**: Ensure the backend is running on port 8000
+- **Connection errors**: Ensure the backend is running on port 8001
 - **API errors**: Check your Gemini API key is valid
 - **Gemini errors**: Make sure `google-generativeai` package is installed (`pip install google-generativeai`)
 - **Model not found**: Update the model name in `.env` (e.g., `GEMINI_MODEL=models/gemini-2.0-flash`)
 
 ### Frontend Issues
 
-- **Cannot connect to server**: Verify the backend is running and check the `API_BASE_URL` in `script.js`
+- **Cannot connect to server**: Verify the backend is running and check the `API_BASE_URL` in `frontend/js/config.js`
 - **CORS errors**: The backend has CORS enabled for all origins. If issues persist, check browser console
 - **Results not displaying**: Check browser console for JavaScript errors
 

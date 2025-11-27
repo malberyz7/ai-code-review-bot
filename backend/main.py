@@ -8,6 +8,7 @@ from pathlib import Path
 from config import FRONTEND_DIR, validate_configuration
 from models import CodeReviewRequest, CodeReviewResponse
 from services import CodeReviewService
+from constants import MAX_CODE_LENGTH
 
 # Validate configuration on startup
 validate_configuration()
@@ -70,10 +71,10 @@ async def review_code(request: CodeReviewRequest):
             detail="Code cannot be empty. Please provide a code snippet to review."
         )
     
-    if len(request.code) > 10000:
+    if len(request.code) > MAX_CODE_LENGTH:
         raise HTTPException(
             status_code=400,
-            detail="Code snippet is too long. Maximum length is 10,000 characters."
+            detail=f"Code snippet is too long. Maximum length is {MAX_CODE_LENGTH:,} characters."
         )
     
     try:

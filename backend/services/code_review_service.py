@@ -1,14 +1,7 @@
 """Code review service."""
 import json
 from typing import Optional, Dict, Any
-from providers import (
-    OpenAIProvider,
-    HuggingFaceProvider,
-    GroqProvider,
-    GeminiProvider,
-    BaseAIProvider
-)
-from config import AI_PROVIDER
+from gemini_service import GeminiService
 from exceptions import (
     create_quota_exception,
     create_rate_limit_exception,
@@ -19,26 +12,11 @@ from exceptions import (
 
 
 class CodeReviewService:
-    """Service for analyzing code using AI providers."""
+    """Service for analyzing code using Gemini AI."""
     
     def __init__(self):
-        """Initialize code review service with appropriate provider."""
-        self.provider = self._get_provider()
-    
-    def _get_provider(self) -> BaseAIProvider:
-        """Get the appropriate AI provider based on configuration."""
-        provider_map = {
-            "openai": OpenAIProvider,
-            "huggingface": HuggingFaceProvider,
-            "groq": GroqProvider,
-            "gemini": GeminiProvider,
-        }
-        
-        provider_class = provider_map.get(AI_PROVIDER)
-        if not provider_class:
-            raise ValueError(f"Unknown AI provider: {AI_PROVIDER}")
-        
-        return provider_class()
+        """Initialize code review service."""
+        self.gemini = GeminiService()
     
     def analyze_code(
         self, code: str, language: Optional[str] = None
@@ -57,7 +35,7 @@ class CodeReviewService:
             HTTPException: For various error conditions
         """
         try:
-            content = self.provider.analyze_code(code, language)
+            content = self.gemini.analyze_code(code, language)
             content = self._clean_content(content)
             analysis = json.loads(content)
             
@@ -104,10 +82,9 @@ class CodeReviewService:
             or ("invalid" in error_msg and "key" in error_msg)
             or "unauthorized" in error_msg
         ):
-            raise create_authentication_exception(AI_PROVIDER)
+            raise create_authentication_exception()
         
         if "api error" in error_msg or "api" in error_msg:
             raise create_generic_api_exception(str(error))
         
         raise create_unexpected_exception(str(error))
-

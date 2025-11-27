@@ -1,18 +1,18 @@
-"""Gemini provider implementation."""
+"""Gemini AI service for code review."""
 import google.generativeai as genai
 from typing import Optional
-from .base import BaseAIProvider
-from config import GEMINI_MODEL
+from config import GEMINI_API_KEY, GEMINI_MODEL
+from constants import AI_TEMPERATURE, AI_MAX_TOKENS
 
 
-class GeminiProvider(BaseAIProvider):
-    """Google Gemini API provider."""
+class GeminiService:
+    """Service for analyzing code using Google Gemini API."""
     
     def __init__(self):
-        """Initialize Gemini provider."""
+        """Initialize Gemini service."""
+        genai.configure(api_key=GEMINI_API_KEY)
         self.model_name = GEMINI_MODEL
-        self.model = None
-        self._initialize_model()
+        self.model = self._initialize_model()
     
     def _initialize_model(self):
         """Initialize Gemini model with fallback options."""
@@ -33,8 +33,7 @@ class GeminiProvider(BaseAIProvider):
         
         for model_name in model_names_to_try:
             try:
-                self.model = genai.GenerativeModel(model_name)
-                return
+                return genai.GenerativeModel(model_name)
             except Exception as e:
                 last_error = str(e)
                 continue
@@ -56,37 +55,9 @@ class GeminiProvider(BaseAIProvider):
                 f"Try: models/gemini-2.0-flash"
             )
     
-    def analyze_code(self, code: str, language: Optional[str] = None) -> str:
-        """
-        Analyze code using Gemini API.
-        
-        Args:
-            code: Code snippet to analyze
-            language: Optional programming language
-            
-        Returns:
-            AI response as string
-        """
-        language_hint = f" (Language: {language})" if language else ""
-        prompt = self._build_prompt(code, language, language_hint)
-        full_prompt = f"""You are an expert code reviewer. Always respond with valid JSON only.
-
-{prompt}"""
-        
-        try:
-            response = self.model.generate_content(
-                full_prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.3,
-                    max_output_tokens=2000,
-                )
-            )
-            return response.text.strip()
-        except Exception as e:
-            raise Exception(f"Gemini API error: {str(e)}")
-    
-    def _build_prompt(self, code: str, language: Optional[str], language_hint: str) -> str:
+    def _build_prompt(self, code: str, language: Optional[str] = None) -> str:
         """Build the prompt for code review."""
+        language_hint = f" (Language: {language})" if language else ""
         return f"""You are an expert code reviewer. Analyze the following code{language_hint} and provide a comprehensive review.
 
 Code to review:
@@ -121,4 +92,32 @@ Focus on:
 5. Best practices and improvements
 
 Return ONLY valid JSON, no additional text."""
+    
+    def analyze_code(self, code: str, language: Optional[str] = None) -> str:
+        """
+        Analyze code using Gemini API.
+        
+        Args:
+            code: Code snippet to analyze
+            language: Optional programming language
+            
+        Returns:
+            AI response as string
+        """
+        prompt = self._build_prompt(code, language)
+        full_prompt = f"""You are an expert code reviewer. Always respond with valid JSON only.
+
+{prompt}"""
+        
+        try:
+            response = self.model.generate_content(
+                full_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=AI_TEMPERATURE,
+                    max_output_tokens=AI_MAX_TOKENS,
+                )
+            )
+            return response.text.strip()
+        except Exception as e:
+            raise Exception(f"Gemini API error: {str(e)}")
 
