@@ -38,7 +38,7 @@ AI Code Review Bot/
 ├── frontend/
 │   ├── index.html       
 │   ├── style.css
-│   └── js/                  # Modular JavaScript files
+│   └── js/                 
 │       ├── config.js
 │       ├── dom.js
 │       ├── utils.js
