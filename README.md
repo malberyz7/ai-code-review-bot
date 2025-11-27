@@ -32,9 +32,8 @@ AI Code Review Bot/
 │   ├── constants.py         
 │   ├── gemini_service.py    
 │   ├── requirements.txt     
-│   ├── services/            
-│   │   └── code_review_service.py
-│   └── .env.example         
+│   └── services/            # Business logic
+│       └── code_review_service.py
 ├── frontend/
 │   ├── index.html       
 │   ├── style.css
@@ -55,7 +54,7 @@ AI Code Review Bot/
 - Google Gemini API key (FREE) - [Get free API key](https://makersuite.google.com/app/apikey)
 - A modern web browser
 
-> 💡 **Note**: This project uses Google Gemini exclusively. See [GEMINI_SETUP.md](GEMINI_SETUP.md) for setup instructions.
+> 💡 **Note**: This project uses Google Gemini exclusively.
 
 ## Setup Instructions
 
@@ -78,11 +77,8 @@ AI Code Review Bot/
    ```
 
 4. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   ```
    
-   Then edit `.env` and add your Google Gemini API key:
+   Create a `.env` file in the `backend/` directory and add your Google Gemini API key:
    ```
    GEMINI_API_KEY=your_gemini_api_key_here
    GEMINI_MODEL=models/gemini-2.0-flash
@@ -273,11 +269,10 @@ Serves the frontend HTML interface. If the frontend files are not found, returns
 - In production, restrict CORS origins to your frontend domain
 - Consider rate limiting for production deployments
 
-## Setup Guides
+## Additional Documentation
 
-- **[QUICKSTART.md](QUICKSTART.md)**: Quick start guide - get running in minutes
-- **[GEMINI_SETUP.md](GEMINI_SETUP.md)**: Detailed setup guide for Google Gemini (current default)
-- **[FREE_SETUP.md](FREE_SETUP.md)**: Alternative free setup options (Hugging Face)
+- **[QUICKSTART.md](QUICKSTART.md)**: Quick start guide
+- **[GEMINI_SETUP.md](GEMINI_SETUP.md)**: Detailed Gemini setup guide
 
 
 ## License
@@ -293,6 +288,6 @@ Feel free to submit issues, fork the repository, and create pull requests for an
 **Built with ❤️ using FastAPI, Google Gemini, and vanilla JavaScript**
 
 **Made by malberyz7 and Lukanbaster**
-
 discord : malberyy
+
 
