@@ -38,7 +38,7 @@ async function handleAPIError(error) {
     console.error('Error reviewing code:', error);
     
     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-        showError('Cannot connect to the server. Make sure the backend is running on http://localhost:8000');
+        showError('Cannot connect to the server. Make sure the backend is running on http://localhost:8001');
         return;
     }
     

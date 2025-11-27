@@ -23,11 +23,12 @@ if not venv_python.exists():
 os.chdir(backend_dir)
 
 if __name__ == "__main__":
+    PORT = 8001
     print("🚀 Starting AI Code Review Bot...")
-    print("📡 Backend API: http://localhost:8000")
-    print("🌐 Frontend UI: http://localhost:8000")
-    print("📚 API Docs: http://localhost:8000/docs")
-    print("\n✨ Open http://localhost:8000 in your browser to use the app!")
+    print(f"📡 Backend API: http://localhost:{PORT}")
+    print(f"🌐 Frontend UI: http://localhost:{PORT}")
+    print(f"📚 API Docs: http://localhost:{PORT}/docs")
+    print(f"\n✨ Open http://localhost:{PORT} in your browser to use the app!")
     print("Press Ctrl+C to stop the server\n")
     
     subprocess.run([
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         "-m", "uvicorn",
         "main:app",
         "--host", "0.0.0.0",
-        "--port", "8000",
+        "--port", str(PORT),
         "--reload"
     ])
 
